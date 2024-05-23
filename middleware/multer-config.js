@@ -11,12 +11,12 @@ const storage = multer.diskStorage({
     callback(null, "images");
   },
   filename: (req, file, callback) => {
-    const name = file.originalname.split(" ").join("_").trim();
+    const name = file.originalname.split(" ").join("_");
     const extension = MIME_TYPES[file.mimetype];
     callback(null, name + Date.now() + "." + extension);
   },
 });
 
-const middlewareMulter = () => multer({ storage: storage }.single("image"));
+const upload = multer({ storage: storage });
 
-export default middlewareMulter;
+export default upload;
