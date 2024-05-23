@@ -16,7 +16,6 @@ export const getBestRatingBooks = async (req, res) => {
 };
 
 export const createBook = async (req, res) => {
-  console.log("req.body", req.body);
   const bodyBook = JSON.parse(req.body.book);
   delete bodyBook._id;
   delete bodyBook._userId;

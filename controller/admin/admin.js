@@ -2,7 +2,6 @@ import { User } from "../../models/users/index.js";
 import { Book } from "../../models/books/index.js";
 
 export const clearAllBook = async (req, res) => {
-  console.log("clear all book REQUEST");
   Book.deleteMany({})
     .then(() => {
       res.send("clear all book");
@@ -13,7 +12,6 @@ export const clearAllBook = async (req, res) => {
 };
 
 export const clearAllUser = async (req, res) => {
-  console.log("clear all user REQUEST");
   User.deleteMany({})
     .then(() => {
       res.send("clear all user");
