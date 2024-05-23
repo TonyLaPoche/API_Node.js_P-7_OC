@@ -1,0 +1,42 @@
+{
+  "name": "mon-vieux-grimoire-api",
+  "version": "0.0.1",
+  "description": "API Rest destiné à l'application web intitulé \"Mon vieux grimoire\"",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": " node ./index.js"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "nodejs",
+    "express",
+    "mongodb",
+    "mongoose"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/TonyLaPoche/API_Node.js_P-7_OC.git"
+  },
+  "author": "Terrade Antoine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TonyLaPoche/API_Node.js_P-7_OC/issues"
+  },
+  "homepage": "https://github.com/TonyLaPoche/API_Node.js_P-7_OC#readme",
+  "devDependencies": {
+    "prettier": "3.2.5"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.0",
+    "mongoose-unique-validator": "^5.0.0"
+  }
+}
