@@ -1,5 +1,16 @@
-import { Book } from "../../models/books/index.js";
 import { User } from "../../models/users/index.js";
+import { Book } from "../../models/books/index.js";
+
+export const clearAllBook = async (req, res) => {
+  console.log("clear all book REQUEST");
+  Book.deleteMany({})
+    .then(() => {
+      res.send("clear all book");
+    })
+    .catch((error) => {
+      res.status(500).json({ error, message: "clear all book failed" });
+    });
+};
 
 export const clearAllUser = async (req, res) => {
   console.log("clear all user REQUEST");
@@ -9,16 +20,6 @@ export const clearAllUser = async (req, res) => {
     })
     .catch((error) => {
       res.status(500).json({ error, message: "clear all user failed" });
-    });
-};
-
-export const clearAllBooks = async (req, res) => {
-  await Book.deleteMany({})
-    .then(() => {
-      res.send("clear all user");
-    })
-    .cath((error) => {
-      res.status(500).json({ error });
     });
 };
 

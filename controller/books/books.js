@@ -17,10 +17,14 @@ export const getBestRatingBooks = async (req, res) => {
 
 export const createBook = async (req, res) => {
   console.log("req.body", req.body);
-  delete req.body._id;
+  const bodyBook = JSON.parse(req.body.book);
+  delete bodyBook._id;
+  delete bodyBook._userId;
+
   const book = new Book({
-    title: req.body.title,
-    imageUrl: req.body.imageUrl,
+    ...bodyBook,
+    userId: req.auth.userId,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
   });
   book
     .save()

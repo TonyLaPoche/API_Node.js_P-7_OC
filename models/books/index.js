@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
-const bookSchema = new mongoose.Schema({
+const { Schema } = mongoose;
+
+const bookSchema = new Schema({
   userId: {
     type: String,
-    required: true,
+    required: false,
   },
   title: {
     type: String,
@@ -11,7 +13,7 @@ const bookSchema = new mongoose.Schema({
   },
   author: {
     type: String,
-    required: true,
+    required: false,
   },
   imageUrl: {
     type: String,
@@ -19,19 +21,19 @@ const bookSchema = new mongoose.Schema({
   },
   year: {
     type: Number,
-    required: true,
+    required: false,
   },
   genre: {
     type: String,
-    required: true,
+    required: false,
   },
   ratings: {
     type: Object,
-    required: true,
+    required: false,
   },
   averageRating: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 
