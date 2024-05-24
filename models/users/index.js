@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import mongooseUniqueValidator from "mongoose-unique-validator";
 
-const userSchema = new mongoose.Schema({
+const { Schema } = mongoose;
+
+const userSchema = new Schema({
   email: {
     type: String,
     required: true,
