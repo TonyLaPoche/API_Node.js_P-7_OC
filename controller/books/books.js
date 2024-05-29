@@ -34,10 +34,11 @@ export const createBook = async (req, res) => {
   delete bodyBook._id;
   delete bodyBook._userId;
 
+  const ref = req.book.name;
   const book = new Book({
     ...bodyBook,
     userId: req.auth.userId,
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${ref}.webp`,
   });
   book
     .save()
@@ -47,11 +48,45 @@ export const createBook = async (req, res) => {
 
 export const updateBook = async (req, res) => {
   const id = req.params.id;
-  await Book.updateOne({ _id: id }, { ...req.body, _id: id })
-    .then(() => res.status(200).json({ message: "Book modifié !" }))
-    .catch((error) => {
-      res.status(400).json({ error });
-    });
+  const link = req.book;
+  const { body } = req;
+
+  const hasFiles = !!req.file;
+
+  if (hasFiles) {
+    Book.findOne({ _id: id })
+      .then((book) => {
+        const filename = book.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+          console.log("image supprimée");
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
+
+    await Book.updateOne({ _id: id }, { ...body, imageUrl: `${req.protocol}://${req.get("host")}/images/${link.name}.webp` })
+      .then(() => {
+        res.status(200).json({ message: "Book modifié ! et image également !" });
+      })
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
+  } else {
+    await Book.updateOne(
+      { _id: id },
+      {
+        ...body,
+        _id: id,
+      }
+    )
+      .then(() => {
+        res.status(200).json({ message: "Book modifié !" });
+      })
+      .catch((error) => {
+        res.status(400).json({ error, message: "Une erreur est survenu" });
+      });
+  }
 };
 
 export const deleteBook = async (req, res) => {
