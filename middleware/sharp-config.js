@@ -1,5 +1,6 @@
 import sharp from "sharp";
 import fs from "fs";
+import path from "path";
 
 const sharpImages = async (req, res, next) => {
   try {
@@ -11,7 +12,8 @@ const sharpImages = async (req, res, next) => {
 
     if (req.file) {
       const timestamp = new Date().getTime();
-      const ref = `${timestamp}_${req.file.originalname.split(" ").join("_")}`;
+      const filenameWithoutExtension = path.basename(req.file.originalname, path.extname(req.file.originalname));
+      const ref = `${timestamp}_${filenameWithoutExtension.split(" ").join("_")}`;
       req.book = {
         name: ref,
       };
