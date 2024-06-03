@@ -57,8 +57,10 @@ export const updateBook = async (req, res) => {
     Book.findOne({ _id: id })
       .then((book) => {
         const filename = book.imageUrl.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
-          console.log("image supprimée");
+        fs.unlink(`images/${filename}`, (err) => {
+          if (err) {
+            console.log(err);
+          }
         });
       })
       .catch((error) => {
