@@ -1,11 +1,23 @@
 import fs from "fs";
 import { Book } from "../../models/books/index.js";
 
+/**
+ * @description ## Controller getBooks
+ * Récupère tous les livres de la base de données
+ * @param {*} req
+ * @param {*} res
+ */
 export const getBooks = async (req, res) => {
   const books = await Book.find();
   res.send(books);
 };
 
+/**
+ * @description ## Controller getBook
+ * Récupère un livre par son id dans la base de données et le renvoie
+ * @param {*} req
+ * @param {*} res
+ */
 export const getBook = async (req, res) => {
   const id = req.params.id;
   await Book.findOne({ _id: id })
@@ -17,6 +29,12 @@ export const getBook = async (req, res) => {
     });
 };
 
+/**
+ * @description ## Controller getBestRatingBooks
+ * Récupère les 3 meilleurs livres notés dans la base de données et les renvoie en réponse à la requête
+ * @param {*} req
+ * @param {*} res
+ */
 export const getBestRatingBooks = async (req, res) => {
   await Book.find()
     .sort({ averageRating: -1 })
@@ -29,6 +47,12 @@ export const getBestRatingBooks = async (req, res) => {
     });
 };
 
+/**
+ * @description ## Controller createBook
+ * Crée un livre dans la base de données et le renvoie en réponse à la requête avec un message de succès
+ * @param {*} req
+ * @param {*} res
+ */
 export const createBook = async (req, res) => {
   const bodyBook = JSON.parse(req.body.book);
   delete bodyBook._id;
@@ -46,6 +70,12 @@ export const createBook = async (req, res) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
+/**
+ * @description ## Controller updateBook
+ * Met à jour un livre dans la base de données et le renvoie en réponse à la requête avec un message de succès ou un message d'erreur si le livre n'existe pas ou si l'utilisateur n'est pas l'auteur du livre. Si une nouvelle image est envoyée, supprime l'ancienne image du serveur et stocke la nouvelle image
+ * @param {*} req
+ * @param {*} res
+ */
 export const updateBook = async (req, res) => {
   const id = req.params.id;
   const link = req.book;
@@ -91,25 +121,34 @@ export const updateBook = async (req, res) => {
   }
 };
 
+/**
+ * @description ## Controller deleteBook
+ * Supprime un livre de la base de données et le renvoie en réponse à la requête avec un message de succès ou un message d'erreur si le livre n'existe pas
+ * @param {*} req
+ * @param {*} res
+ */
 export const deleteBook = async (req, res) => {
   const id = req.params.id;
   await Book.findOne({ _id: id })
     .then((book) => {
-      if (book.userId !== req.auth.userId) {
-        res.status(401).json({ message: "Vous n'êtes pas autorisé à supprimer ce livre !" });
-      } else {
-        const filename = book.imageUrl.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
-          Book.deleteOne({ _id: id })
-            .then(() => res.status(200).json({ message: "Book supprimé !" }))
-            .catch((error) => res.status(400).json({ error }));
-        });
-      }
+      const filename = book.imageUrl.split("/images/")[1];
+      fs.unlink(`images/${filename}`, () => {
+        Book.deleteOne({ _id: id })
+          .then(() => res.status(200).json({ message: "Book supprimé !" }))
+          .catch((error) => res.status(400).json({ error }));
+      });
     })
     .catch((error) => {
       res.status(404).json({ error });
     });
 };
+
+/**
+ * @description ## Controller setBookRating
+ * Met à jour la note d'un livre dans la base de données et le renvoie en réponse à la requête avec un message de succès ou un message d'erreur si le livre n'existe pas ou si la note n'est pas valide
+ * @param {*} req
+ * @param {*} res
+ */
 export const setBookRating = async (req, res) => {
   const id = req.params.id;
   const rating = req.body.rating;

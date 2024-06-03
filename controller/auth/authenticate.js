@@ -2,6 +2,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../../models/users/index.js";
 
+/**
+ * @description ## Controller signup
+ * Crée un utilisateur dans la base de données et le renvoie en réponse à la requête avec un message de succès ou d'erreur.
+ * @param {*} req
+ * @param {*} res
+ */
 export const signup = async (req, res) => {
   bcrypt
     .hash(req.body.password, 10)
@@ -22,6 +28,12 @@ export const signup = async (req, res) => {
     });
 };
 
+/**
+ * @description ## Controller login
+ * Vérifie si l'utilisateur existe dans la base de données et si le mot de passe est correct. Si l'utilisateur existe et que le mot de passe est correct, renvoie un token d'authentification et l'identifiant de l'utilisateur en réponse à la requête. Si l'utilisateur n'existe pas ou que le mot de passe est incorrect, renvoie un message d'erreur.
+ * @param {*} req
+ * @param {*} res
+ */
 export const login = async (req, res) => {
   User.findOne({
     email: req.body.email,

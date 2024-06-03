@@ -2,6 +2,15 @@ import sharp from "sharp";
 import fs from "fs";
 import path from "path";
 
+/**
+ * @description ## Middleware sharpImages
+ * Redimensionne l'image en 20% de sa taille d'origine.
+ * Stocke l'image sous le nom de la date actuelle en timestamp et le nom du fichier d'origine sans extension.
+ * Stocke l'image en webp. Stocke l'image dans le dossier images du serveur.
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 const sharpImages = async (req, res, next) => {
   try {
     fs.access("./images", (error) => {
