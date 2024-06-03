@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login, signup } from "../controller/auth/authenticate.js";
 import { createBook, deleteBook, getBestRatingBooks, getBook, getBooks, setBookRating, updateBook } from "../controller/books/books.js";
-import { clearAllBook, clearAllUser, getAllUser } from "../controller/admin/admin.js";
+
 /* middleware */
 import auth from "../middleware/auth.js";
 import upload from "../middleware/multer-config.js";
@@ -22,10 +22,5 @@ routes.post("/books", auth, upload.single("image"), sharpImages, createBook);
 routes.put("/books/:id", auth, hasAuthor, upload.single("image"), sharpImages, updateBook);
 routes.delete("/books/:id", auth, hasAuthor, deleteBook);
 routes.post("/books/:id/rating", auth, setBookRating);
-
-// admin routes , Mode dev only
-routes.get("/users", getAllUser);
-routes.delete("/users", clearAllUser);
-routes.delete("/books", clearAllBook);
 
 export default routes;
